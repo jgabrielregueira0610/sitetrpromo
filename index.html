@@ -217,8 +217,7 @@ h2 { font-size: clamp(1.9rem, 4.2vw, 3rem); font-weight: 300; line-height: 1.16;
 }
 .ring::before { content: ""; position: absolute; inset: 14px; border-radius: 50%; border: 1px solid rgba(201, 160, 74, .16); }
 /* O "TR" (sem o rastro de luz) fica no centro do círculo; o rastro cai dentro dele */
-.ring picture { display: block; width: 66%; transform: translate(-8.2%, 8%); }
-.ring img { width: 100%; filter: drop-shadow(0 20px 40px rgba(0, 0, 0, .6)); }
+.ring img { display: block; width: 70%; height: auto; transform: translate(-8.2%, 8%); filter: drop-shadow(0 20px 40px rgba(0, 0, 0, .6)); }
 .sparkle { position: absolute; color: var(--gold-1); animation: twinkle 3.6s ease-in-out infinite; }
 .sparkle.s1 { width: 34px; height: 34px; right: 7%; top: 14%; }
 .sparkle.s2 { width: 16px; height: 16px; right: 22%; top: 24%; animation-delay: 1.4s; opacity: .7; }
