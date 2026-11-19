@@ -383,8 +383,9 @@ body.lb-open { overflow: hidden; }
 .insta-label { font-size: .72rem; letter-spacing: .3em; text-transform: uppercase; color: var(--gold-2); }
 .insta-handle { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 500; letter-spacing: .02em; line-height: 1.2; }
 .insta-card > p:not(.insta-label) { color: var(--muted); margin-top: 6px; max-width: 60ch; }
-.insta-card > :not(.insta-icon):not(.btn) { grid-column: 2; }
-.insta-card .btn { grid-column: 3; grid-row: 1 / span 3; }
+.insta-card > :not(.insta-icon):not(.insta-actions) { grid-column: 2; }
+.insta-actions { grid-column: 3; grid-row: 1 / span 3; display: grid; gap: 12px; width: 300px; }
+.insta-actions .btn { width: 100%; justify-content: center; white-space: nowrap; }
 
 .insta-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
 .insta-grid a { display: block; border-radius: 14px; overflow: hidden; border: 1px solid var(--line-soft); aspect-ratio: 4 / 5; position: relative; }
@@ -516,7 +517,7 @@ body.lb-open { overflow: hidden; }
   .contact-grid { grid-template-columns: 1fr; gap: 56px; }
   .cta-band { padding: 72px 0 0; }
   .insta-card { grid-template-columns: auto 1fr; row-gap: 4px; padding: 32px 30px; }
-  .insta-card .btn { grid-column: 1 / -1; grid-row: auto; margin-top: 22px; width: 100%; }
+  .insta-actions { grid-column: 1 / -1; grid-row: auto; margin-top: 22px; width: 100%; }
   .insta-grid { grid-template-columns: repeat(2, 1fr); }
   .footer-grid { grid-template-columns: 1fr 1fr; gap: 44px 32px; }
   .footer-brand { grid-column: 1 / -1; }
@@ -965,7 +966,10 @@ body.lb-open { overflow: hidden; }
             <p class="insta-label">Instagram</p>
             <h3 class="insta-handle" data-instagram-usuario>@trpromo_</h3>
             <p>Acompanhe nossas ações, novidades e o dia a dia da TR PROMO.</p>
-            <a class="btn btn-primary" data-instagram href="https://www.instagram.com/trpromo_/" target="_blank" rel="noopener noreferrer">Seguir no Instagram <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <div class="insta-actions">
+              <a class="btn btn-primary" data-instagram href="https://www.instagram.com/trpromo_/" target="_blank" rel="noopener noreferrer">Seguir no Instagram <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+              <a class="btn btn-whatsapp" data-wa="badge" href="#contato" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true"><use href="#i-whatsapp"/></svg> Chamar no WhatsApp <em class="pending-tag" hidden>a preencher</em></a>
+            </div>
           </div>
 
           <!-- Publicações: troque as imagens por fotos reais das ações (assets/img) quando tiver. -->
@@ -978,7 +982,6 @@ body.lb-open { overflow: hidden; }
         </div>
 
         <ul class="social-row reveal">
-          <li><a class="social-chip" data-wa="badge" href="#contato"><svg class="icon" aria-hidden="true"><use href="#i-whatsapp"/></svg><span>WhatsApp</span><em class="pending-tag" hidden>a preencher</em></a></li>
           <li><a class="social-chip" data-social="linkedin" data-optional href="#" target="_blank" rel="noopener noreferrer" hidden><svg class="icon" aria-hidden="true"><use href="#i-linkedin"/></svg><span>LinkedIn</span></a></li>
           <li><a class="social-chip" data-social="tiktok" data-optional href="#" target="_blank" rel="noopener noreferrer" hidden><svg class="icon" aria-hidden="true"><use href="#i-tiktok"/></svg><span>TikTok</span></a></li>
           <li><a class="social-chip" data-social="youtube" data-optional href="#" target="_blank" rel="noopener noreferrer" hidden><svg class="icon" aria-hidden="true"><use href="#i-youtube"/></svg><span>YouTube</span></a></li>
