@@ -207,9 +207,12 @@ h2 { font-size: clamp(1.9rem, 4.2vw, 3rem); font-weight: 300; line-height: 1.16;
 .action .dots { position: absolute; top: 0; left: 0; right: 0; display: flex; gap: 4px; padding: 8px 10px 0; z-index: 2; opacity: 0; transition: opacity .3s; pointer-events: none; }
 .action .dots i { flex: 1; height: 3px; border-radius: 2px; background: rgba(255, 255, 255, .35); transition: background .25s; }
 .action .dots i.on { background: var(--gold-1); }
-.action.multi:hover .dots, .action.multi:focus-visible .dots { opacity: 1; }
-.action.multi img.alt { opacity: 0; transition: opacity .45s ease, transform 1s var(--ease); }
-.action.multi img.alt.on { opacity: 1; }
+.action .track { position: absolute; inset: 0; display: flex; z-index: -1; transition: transform .55s cubic-bezier(.22, .8, .25, 1); will-change: transform; }
+.action .track.drag { transition: none; }
+.action .track img { position: relative; inset: auto; flex: 0 0 100%; width: 100%; height: 100%; z-index: auto; }
+.action.multi { touch-action: pan-y; }
+.action.multi:hover img { transform: none; }
+.action.multi .dots { opacity: 1; }
 .featured .action { width: calc((100% - 36px) / 3); aspect-ratio: 4 / 5; }
 .featured .action .cap strong { font-size: 1.2rem; }
 .more .action { width: calc((100% - 54px) / 4); aspect-ratio: 4 / 5; }
@@ -1261,36 +1264,58 @@ window.TR_CONFIG = {
   }
 
   
-  /* ---------- Portfólio: carrossel ao passar o mouse (Mais ações) ---------- */
+  /* ---------- Portfólio: carrossel deslizante (Mais ações) ---------- */
   $$(".more .action").forEach(function (a) {
     var k = a.getAttribute("data-g"), g = PF[k];
     if (!g || g.i.length < 2) return;
-    var base = a.querySelector("img"), n = g.i.length, imgs = [base], loaded = false, cur = 0;
+    var base = a.querySelector("img"), n = g.i.length, cur = 0, loaded = false, moved = false;
     a.classList.add("multi");
+    var track = document.createElement("span"); track.className = "track";
+    a.insertBefore(track, base); track.appendChild(base);
     var dots = document.createElement("span"); dots.className = "dots"; dots.setAttribute("aria-hidden", "true");
     for (var j = 0; j < n; j++) { dots.appendChild(document.createElement("i")); }
     dots.firstChild.className = "on"; a.appendChild(dots);
     function load() {
       if (loaded) return; loaded = true;
       for (var j = 1; j < n; j++) {
-        var im = new Image(); im.src = "img/t/" + k + "-" + (j + 1) + ".webp"; im.alt = ""; im.className = "alt"; im.decoding = "async";
-        a.insertBefore(im, base.nextSibling ? imgs[imgs.length - 1].nextSibling : null); imgs.push(im);
+        var im = new Image(); im.src = "img/t/" + k + "-" + (j + 1) + ".webp"; im.alt = ""; im.decoding = "async"; im.draggable = false; track.appendChild(im);
       }
     }
-    function show(i) {
-      if (i === cur) return; cur = i;
-      imgs.forEach(function (im, x) { if (x > 0) im.classList.toggle("on", x === i); });
-      base.style.opacity = i === 0 ? 1 : 0;
-      [].forEach.call(dots.children, function (d, x) { d.className = x === i ? "on" : ""; });
+    function go(i) {
+      cur = Math.max(0, Math.min(n - 1, i));
+      track.style.transform = "translateX(" + (-cur * 100) + "%)";
+      [].forEach.call(dots.children, function (d, x) { d.className = x === cur ? "on" : ""; });
     }
-    base.style.transition = "opacity .45s ease, transform 1s var(--ease)";
     a.addEventListener("mouseenter", load);
     a.addEventListener("focus", load);
     a.addEventListener("mousemove", function (e) {
-      load(); var r = a.getBoundingClientRect(); show(Math.max(0, Math.min(n - 1, Math.floor((e.clientX - r.left) / r.width * n))));
+      load(); var r = a.getBoundingClientRect(); go(Math.floor((e.clientX - r.left) / r.width * n));
     });
-    a.addEventListener("mouseleave", function () { show(0); });
+    a.addEventListener("mouseleave", function () { go(0); });
+    /* toque: arrastar com o dedo */
+    var sx = 0, sy = 0, dx = 0, drag = false, lock = null;
+    a.addEventListener("touchstart", function (e) {
+      load(); var t = e.touches[0]; sx = t.clientX; sy = t.clientY; dx = 0; drag = true; lock = null; moved = false;
+    }, { passive: true });
+    a.addEventListener("touchmove", function (e) {
+      if (!drag) return; var t = e.touches[0]; dx = t.clientX - sx; var dy = t.clientY - sy;
+      if (lock === null && (Math.abs(dx) > 6 || Math.abs(dy) > 6)) lock = Math.abs(dx) > Math.abs(dy);
+      if (lock) {
+        moved = true; track.classList.add("drag");
+        var w = a.getBoundingClientRect().width, off = dx;
+        if ((cur === 0 && dx > 0) || (cur === n - 1 && dx < 0)) off = dx / 3;
+        track.style.transform = "translateX(" + (-cur * w + off) + "px)";
+      }
+    }, { passive: true });
+    function end() {
+      if (!drag) return; drag = false; track.classList.remove("drag");
+      var w = a.getBoundingClientRect().width;
+      if (moved && Math.abs(dx) > w * 0.15) go(cur + (dx < 0 ? 1 : -1)); else go(cur);
+    }
+    a.addEventListener("touchend", end); a.addEventListener("touchcancel", end);
+    a.addEventListener("click", function (e) { if (moved) { e.stopImmediatePropagation(); e.preventDefault(); moved = false; } }, true);
   });
+
   /* ---------- Menu ---------- */
   var header = $(".site-header");
   var toggle = $(".menu-toggle");
