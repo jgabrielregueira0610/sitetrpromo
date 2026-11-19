@@ -266,10 +266,10 @@ body.lb-open { overflow: hidden; }
 .blade .spark { position: absolute; right: -14px; top: -14px; width: 28px; height: 28px; color: var(--gold-1); animation: twinkle 4s ease-in-out infinite; }
 
 .hero-grid { display: grid; grid-template-columns: 1fr; gap: 40px; align-items: center; flex: 1; }
-.hero h1 { font-size: clamp(1.7rem, 2.9vw, 2.3rem); font-weight: 300; line-height: 1.12; letter-spacing: -.015em; }
+.hero h1 { font-size: clamp(1.7rem, 4.1vw, 3.4rem); font-weight: 300; line-height: 1.12; letter-spacing: -.015em; }
 .hero h1 .gold { font-weight: 600; }
-.hero h1 { max-width: 24ch; }
-.lead { margin-top: 14px; max-width: 66ch; color: var(--muted); font-size: .95rem; font-weight: 300; }
+.hero h1 { max-width: none; }
+.lead { margin-top: 18px; max-width: 92ch; color: var(--muted); font-size: 1.05rem; font-weight: 300; }
 .hero-actions { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 16px; }
 
 .hero-mark { display: none; }
@@ -302,13 +302,13 @@ body.lb-open { overflow: hidden; }
 .about-frame {
   position: relative; border: 1px solid var(--line); border-radius: 24px; padding: 64px 40px 44px;
   background: radial-gradient(70% 60% at 50% 40%, rgba(201, 160, 74, .15), transparent 70%), var(--surface);
-  display: grid; gap: 40px; justify-items: center; overflow: hidden;
+  display: block; aspect-ratio: 13 / 10; overflow: hidden;
 }
 .about-frame::before, .about-frame::after { content: ""; position: absolute; width: 38px; height: 38px; border: 1px solid var(--gold-2); }
 .about-frame::before { top: 18px; left: 18px; border-right: 0; border-bottom: 0; border-top-left-radius: 10px; }
 .about-frame::after { bottom: 18px; right: 18px; border-left: 0; border-top: 0; border-bottom-right-radius: 10px; }
-.about-frame img { width: min(78%, 340px); }
-.about-frame figcaption { font-size: .72rem; letter-spacing: .34em; text-transform: uppercase; color: var(--gold-2); text-align: center; }
+.about-frame img { position: absolute; left: 50%; top: 50%; width: min(70%, 320px); height: auto; transform: translate(-58.2%, -42%); }
+.about-frame figcaption { position: absolute; left: 0; right: 0; bottom: 28px; font-size: .72rem; letter-spacing: .34em; text-transform: uppercase; color: var(--gold-2); text-align: center; }
 
 /* ---------- Serviços ---------- */
 .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
@@ -532,7 +532,9 @@ body.lb-open { overflow: hidden; }
   .hero-actions .btn { width: 100%; }
   .hero-strip { gap: 8px 22px; margin-top: 20px; }
   .hero-strip li { font-size: .66rem; letter-spacing: .22em; }
-  .about-frame { padding: 52px 24px 36px; }
+  .about-frame { padding: 0; }
+  .about-frame img { width: 60%; }
+  .about-frame figcaption { bottom: 18px; letter-spacing: .26em; font-size: .62rem; }
   .cta-box { padding: 60px 22px; border-radius: 22px; }
   .cta-box .btn { width: 100%; padding: 0 18px; letter-spacing: .1em; }
   .insta-card { padding: 28px 22px; column-gap: 18px; }
