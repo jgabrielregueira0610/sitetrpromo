@@ -1287,7 +1287,8 @@ window.TR_CONFIG = {
 
   
   /* ---------- Portfólio: carrossel deslizante (Mais ações) ---------- */
-  $$(".more .action").forEach(function (a) {
+  $$(".more .action, .featured .action").forEach(function (a) {
+    var dir = a.closest(".more") ? "m" : "f";
     var k = a.getAttribute("data-g"), g = PF[k];
     if (!g || g.i.length < 2) return;
     var base = a.querySelector("img"), n = g.i.length, cur = 0, loaded = false;
@@ -1300,7 +1301,7 @@ window.TR_CONFIG = {
     function load() {
       if (loaded) return; loaded = true;
       for (var j = 1; j < n; j++) {
-        var im = new Image(); im.src = "img/m/" + k + "-" + (j + 1) + ".webp"; im.alt = ""; im.decoding = "async"; im.draggable = false; track.appendChild(im);
+        var im = new Image(); im.src = "img/" + dir + "/" + k + "-" + (j + 1) + ".webp"; im.alt = ""; im.decoding = "async"; im.draggable = false; track.appendChild(im);
       }
     }
     function go(i) {
